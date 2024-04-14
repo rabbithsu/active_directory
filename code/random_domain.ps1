@@ -16,7 +16,7 @@ for ($i = 0; $i -lt $num_groups; $i++){
     $group_name = (Get-Random -InputObject $group_names)
     $group = @{ "name" = "$group_name" }
     $groups += $group
-    $group_names.Remove($new_group)
+    $group_names.Remove($group_name)
 }
 
 $num_users = 100
