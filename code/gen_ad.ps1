@@ -43,9 +43,17 @@ function CreateADUser(){
         }
         
     }
-    if ( $UserObject.local_admin -eq $True){
-        net localgroup administrators $Global:Domain\$username /add
+
+    # Add to local admin as needed
+    # if ( $UserObject.local_admin -eq $True){
+    #     net localgroup administrators $Global:Domain\$username /add
+    # }
+    $add_command = "net localgroup administrators $Global:Domain\$username /add"
+    foreach ($hostname in $userObject.local_admin){
+        echo "Invoke-Command -Computer $hostname -ScriptBlock { $add_command }" | Invoke-Expression        
     }
+
+
 }
 
 
