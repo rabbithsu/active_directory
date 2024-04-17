@@ -43,6 +43,9 @@ function CreateADUser(){
         }
         
     }
+    if ( $UserObject.local_admin -eq $True){
+        net localgroup administrators $Global:Domain\$username /add
+    }
 }
 
 
