@@ -30,7 +30,9 @@ function CreateADUser(){
 
     # Actually create the AD object
     New-ADUser -Name "$firstname $lastname" -GivenName $firstname -Surname $lastname -SamAccountName $SamAccountName -UserPrincipalName $principalname@$Global:Domain -AccountPassword (ConvertTo-SecureString $password -AsPlainText -Force) -PassThru | Enable-ADAccount    
-
+    if ( $userObject.show_password ){
+        Set-ADUser $principalName -Description "Your default password is: $password"
+    }
     # Add the user to its appropriate group
     foreach($group_name in $userObject.groups){
         try{

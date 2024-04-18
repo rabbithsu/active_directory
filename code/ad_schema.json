@@ -10,7 +10,7 @@
     "users": [
 
         {
-            "local_admin": ["ws01"],
+            
             "name": "Alice Lice",
             "password": "bubbles",
             "groups": [
@@ -18,7 +18,7 @@
             ]
         },
         {
-            "local_admin": ["ws02"],
+            
             "name": "Bob Ob",
             "password": "ashley",
             "groups": [
@@ -26,13 +26,22 @@
             ]
         },
         {
-            "local_admin": ["ws01", "ws02", "dc1"],
+            
             "name": "Charlie Harlie",
             "password": "P@ssw0rdABC",
             "groups": [
                 "Employees"
             ]
+        },
+        {
+            "name": "Dan An",
+            "show_password": true,
+            "password": "apejriasd;lfjaepowjpafdplajdif;i!b",
+            "groups": [
+                "Employees"
+            ]
         }
+
     ]
 
 
