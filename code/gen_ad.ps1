@@ -25,6 +25,9 @@ function CreateADUser(){
     # Generate a "first initial, last name" structure for username
     $firstname, $lastname = $name.Split(" ")
     $username = ($firstname[0] + $lastname).ToLower()
+    if ( $userObject.kerberoastable ){
+        $username = $name
+    }
     $samAccountName = $username
     $principalname = $username
 
@@ -32,6 +35,11 @@ function CreateADUser(){
     New-ADUser -Name "$firstname $lastname" -GivenName $firstname -Surname $lastname -SamAccountName $SamAccountName -UserPrincipalName $principalname@$Global:Domain -AccountPassword (ConvertTo-SecureString $password -AsPlainText -Force) -PassThru | Enable-ADAccount    
     if ( $userObject.show_password ){
         Set-ADUser $principalName -Description "Your default password is: $password"
+    }
+    if ( $userObject.kerberoastable ){
+        $spn = $userObject.kerberoastable.spn
+        setspn -a $spn/$username.$Global:Domain $Global:BaseDomain\$username
+
     }
     # Add the user to its appropriate group
     foreach($group_name in $userObject.groups){
@@ -65,6 +73,10 @@ function RemoveADUser {
     $name = $userObject.name
     $firstname, $lastname = $name.Split(" ")
     $username = ($firstname[0] + $lastname).ToLower()
+    if ($userObject.kerberoastable){
+        $username = $name
+        setspn -D $spn/$username.$Global:Domain $Global:BaseDomain\$username
+    }
     $samAccountName = $username
     
     Remove-ADUser -Identity $samAccountName -Confirm:$False
@@ -86,6 +98,7 @@ function StrengthenPasswordPolicy(){
 
 $json = ( Get-Content $JSONFile | ConvertFrom-JSON)
 $Global:Domain = $json.domain
+$Global:BaseDomain = $Global:Domain.split(".")[0]
 
 If (-not $Undo){
     WeakenPasswordPolicy

@@ -40,6 +40,13 @@
             "groups": [
                 "Employees"
             ]
+        },
+        {
+            "name": "http_svc",
+            "password": "iloveyou",
+            "kerberoastable": {
+                "spn": "http"
+            }
         }
 
     ]
